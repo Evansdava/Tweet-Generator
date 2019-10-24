@@ -1,5 +1,5 @@
 import timeit
-# from dictionary_words import sentence
+from sys import argv
 
 
 stmt = "sentence(10)"
@@ -18,24 +18,24 @@ timer10000 = timeit.Timer(stmt, setup=setup)
 stmt = "sentence(100000)"
 timer100000 = timeit.Timer(stmt, setup=setup)
 
-stmt = "sentence(100000)"
+stmt = "sentence(1000000)"
 timer1000000 = timeit.Timer(stmt, setup=setup)
 
-iterations = 10
-result = timer10.timeit(number=iterations)
-print("time for 10-word sentence: " + str(result))
+iterations = int(argv[1])
+result = round(timer10.timeit(number=iterations) * 1000 / iterations)
+print("Average time for 10-word sentence: " + str(result) + " ms")
 
-result = timer100.timeit(number=iterations)
-print("time for 100-word sentence: " + str(result))
+result = round(timer100.timeit(number=iterations) * 1000 / iterations)
+print("Average time for 100-word sentence: " + str(result) + " ms")
 
-result = timer1000.timeit(number=iterations)
-print("time for 1000-word sentence: " + str(result))
+result = round(timer1000.timeit(number=iterations) * 1000 / iterations)
+print("Average time for 1000-word sentence: " + str(result) + " ms")
 
-result = timer10000.timeit(number=iterations)
-print("time for 10000-word sentence: " + str(result))
+result = round(timer10000.timeit(number=iterations) * 1000 / iterations)
+print("Average time for 10000-word sentence: " + str(result) + " ms")
 
-result = timer100000.timeit(number=iterations)
-print("time for 100000-word sentence: " + str(result))
+result = round(timer100000.timeit(number=iterations) * 1000 / iterations)
+print("Average time for 100000-word sentence: " + str(result) + " ms")
 
-result = timer1000000.timeit(number=iterations)
-print("time for 1000000-word sentence: " + str(result))
+result = round(timer1000000.timeit(number=iterations) * 1000 / iterations)
+print("Average time for 1000000-word sentence: " + str(result) + " ms")
