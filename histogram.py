@@ -146,4 +146,4 @@ if __name__ == '__main__':
     text = read_file_words('Iliad.txt')
     # text = "One fish two fish red Fish blue fish".split()
     hist = histogram_dict(text)
-    print(test_sample_freq(hist, 100000))
+    print(sample_by_frequency(hist))
