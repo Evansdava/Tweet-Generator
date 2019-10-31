@@ -19,6 +19,7 @@ def histogram_dict(text):
 
 @time_it
 def histogram_dict_list(text):
+    """Converts a dictionary histogram to a list of lists"""
     hist = histogram_dict(text)
     hist_list = [[word, hist[word]] for word in hist]
 
@@ -87,7 +88,7 @@ def swap(swap_list, ind_a, ind_b):
 
 
 def quicksort(histogram, low, high):
-    """Sorts a list histogram from highest number of occurences to lowest"""
+    """Sorts a count histogram from lowest number of occurences to highest"""
     if low < high:
         # Partition index
         pi = partition(histogram, low, high)
@@ -136,13 +137,31 @@ def frequency(histogram, word):
 
 
 @time_it
-def sample_by_frequency(histogram):
+def sample_by_dict_freq(histogram):
     """Return a random word, with a probability based on occurences"""
     count = randint(1, total_words(histogram))
     for key in histogram:
         count -= histogram[key]
         if count <= 0:
             return key
+    return -1
+
+
+@time_it
+def sample_by_frequency(histogram):
+    """Return a random word with a probability based on occurences
+
+    Works with list of lists and list of tuples
+    """
+    count = 0
+    for word in histogram:
+        count += word[1]
+
+    count = randint(1, count)
+    for word in histogram:
+        count -= word[1]
+        if count <= 0:
+            return word[0]
     return -1
 
 
@@ -160,6 +179,6 @@ def test_sample_freq(histogram, iterations):
 
 if __name__ == '__main__':
     text = read_file_words('Iliad.txt')
-    # text = "One fish two fish red Fish blue fish".split()
-    hist = histogram_counts(text)
-    print(quicksort(hist, 0, len(hist) - 1))
+    text = "One fish two fish red Fish blue fish".split()
+    hist = histogram_tuple(text)
+    print(test_sample_freq(hist, 10000))
