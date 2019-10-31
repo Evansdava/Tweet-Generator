@@ -63,6 +63,22 @@ def histogram_tuple(text):
     return hist
 
 
+def histogram_counts(text):
+    """Create a histogram that groups words by number of occurences"""
+    hist = histogram_dict(text)
+    values = sorted(hist.values())
+    vals = set(values)
+    new_hist = []
+    for val in vals:
+        words = []
+        for key in hist:
+            if hist[key] == val:
+                words.append(key)
+        new_hist.append((val, words))
+
+    return new_hist
+
+
 def swap(swap_list, ind_a, ind_b):
     """Helper function to swap two elements in a list"""
     hold = swap_list[ind_a]
@@ -82,7 +98,7 @@ def quicksort(histogram, low, high):
         # Sort the upper half (above initial pivot)
         quicksort(histogram, pi + 1, high)
 
-    # return(histogram)
+    return(histogram)
 
 
 def partition(histogram, low, high):
@@ -90,11 +106,11 @@ def partition(histogram, low, high):
     # Counter to start from the bottom
     i = low - 1
     # Pivot is the last element of the array
-    pivot = histogram[high][1]
+    pivot = histogram[high][0]
 
     # Iterate through the indices and sort around the pivot
     for j in range(low, high):
-        if histogram[j][1] <= pivot:
+        if histogram[j][0] <= pivot:
             i += 1
             swap(histogram, i, j)
     swap(histogram, i + 1, high)
@@ -108,10 +124,7 @@ def unique_words(histogram):
 
 def total_words(histogram):
     """Return the total number of words in a histogram"""
-    total = 0
-    for word in histogram:
-        total += histogram[word]
-    return total
+    return sum(histogram.values())
 
 
 def frequency(histogram, word):
@@ -122,6 +135,7 @@ def frequency(histogram, word):
         return "Word not found"
 
 
+@time_it
 def sample_by_frequency(histogram):
     """Return a random word, with a probability based on occurences"""
     count = randint(1, total_words(histogram))
@@ -137,7 +151,9 @@ def test_sample_freq(histogram, iterations):
     """Test the sample_by_frequency function to ensure randomness"""
     output = []
     for _ in range(iterations):
-        output.append(sample_by_frequency(histogram))
+        sample = sample_by_frequency(histogram)
+        assert sample != -1, "Function did not return word"
+        output.append(sample)
 
     return histogram_dict(output)
 
@@ -145,5 +161,5 @@ def test_sample_freq(histogram, iterations):
 if __name__ == '__main__':
     text = read_file_words('Iliad.txt')
     # text = "One fish two fish red Fish blue fish".split()
-    hist = histogram_dict(text)
-    print(sample_by_frequency(hist))
+    hist = histogram_counts(text)
+    print(quicksort(hist, 0, len(hist) - 1))
