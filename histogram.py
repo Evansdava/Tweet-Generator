@@ -27,6 +27,15 @@ def histogram_dict_list(text):
 
 
 @time_it
+def histogram_dict_tup(text):
+    """Converts a dictionary histogram to a list of lists"""
+    hist = histogram_dict(text)
+    hist_tup = [(word, hist[word]) for word in hist]
+
+    return hist_tup
+
+
+@time_it
 def histogram_list(text):
     """Read a text and return a list histogram of its words"""
     hist = []
@@ -147,7 +156,6 @@ def sample_by_dict_freq(histogram):
     return -1
 
 
-@time_it
 def sample_by_frequency(histogram):
     """Return a random word with a probability based on occurences
 
@@ -165,6 +173,17 @@ def sample_by_frequency(histogram):
     return -1
 
 
+def generate_sentence(histogram, length):
+    """Generate a number of words equal to length and output a 'sentence'"""
+    output = ""
+    for _ in range(length):
+        if histogram == list(histogram):
+            output += sample_by_frequency(histogram) + " "
+        else:
+            output += sample_by_dict_freq(histogram) + " "
+    return output
+
+
 @time_it
 def test_sample_freq(histogram, iterations):
     """Test the sample_by_frequency function to ensure randomness"""
@@ -177,8 +196,16 @@ def test_sample_freq(histogram, iterations):
     return histogram_dict(output)
 
 
+def run_file():
+    """Runs everything required, for use in other files"""
+    text = read_file_words('Iliad.txt')
+    # text = "One fish two fish red Fish blue fish".split()
+    hist = histogram_dict_tup(text)
+    return generate_sentence(hist, 10)
+
+
 if __name__ == '__main__':
     text = read_file_words('Iliad.txt')
-    text = "One fish two fish red Fish blue fish".split()
-    hist = histogram_tuple(text)
-    print(test_sample_freq(hist, 10000))
+    # text = "One fish two fish red Fish blue fish".split()
+    hist = histogram_dict_tup(text)
+    print(generate_sentence(hist, 10))
