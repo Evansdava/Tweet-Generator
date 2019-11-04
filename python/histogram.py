@@ -1,5 +1,5 @@
-from dictionary_words import read_file_words
-from utility import time_it
+from python.dictionary_words import read_file_words
+from python.utility import time_it
 from random import randint
 
 
@@ -176,11 +176,17 @@ def sample_by_frequency(histogram):
 def generate_sentence(histogram, length):
     """Generate a number of words equal to length and output a 'sentence'"""
     output = ""
-    for _ in range(length):
+    for i in range(length):
         if histogram == list(histogram):
-            output += sample_by_frequency(histogram) + " "
+            if i == 0:
+                output += sample_by_frequency(histogram).capitalize() + " "
+            else:
+                output += sample_by_frequency(histogram) + " "
         else:
-            output += sample_by_dict_freq(histogram) + " "
+            if i == 0:
+                output += sample_by_dict_freq(histogram).capitalize() + " "
+            else:
+                output += sample_by_dict_freq(histogram) + " "
     return output
 
 
@@ -196,12 +202,12 @@ def test_sample_freq(histogram, iterations):
     return histogram_dict(output)
 
 
-def run_file():
+def run_file(num):
     """Runs everything required, for use in other files"""
-    text = read_file_words('Iliad.txt')
+    text = read_file_words('python/Iliad.txt')
     # text = "One fish two fish red Fish blue fish".split()
     hist = histogram_dict_tup(text)
-    return generate_sentence(hist, 10)
+    return generate_sentence(hist, num)
 
 
 if __name__ == '__main__':

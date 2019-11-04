@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}The Iliad Sentence Generator{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row p-5">
+            <div class="col-md-10 offset-1">
+                <div class="row d-flex justify-content-center">
+                    {{ sent }}
+                </div>
+                <div class="row pt-5 d-flex justify-content-center">
+                    <form action="/" class="form-inline">
+                        <input type="text" name="num" class="mr-2" size="3">
+                        <button class="btn btn-primary">Generate Sentence</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
