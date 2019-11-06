@@ -39,13 +39,16 @@ def histogram_dict_tup(text):
 def histogram_list(text):
     """Read a text and return a list histogram of its words"""
     hist = []
+    # Boolean to mark whether the word needs to be added to the list or not
     added = True
     for word in text:
         word = word.lower()
         for word_list in hist:
             if word_list[0] == word:
                 word_list[1] += 1
+                # If the word is found, it doesn't need a new entry
                 added = False
+        # If the boolean is true, add a new entry
         if added is True:
             hist.append([word, 1])
         added = True
@@ -57,6 +60,7 @@ def histogram_list(text):
 def histogram_tuple(text):
     """Read a text and return a tuple histogram of its words"""
     hist = []
+    # Boolean to mark whether the word needs to be added to the list or not
     added = True
     for word in text:
         word = word.lower()
@@ -65,7 +69,9 @@ def histogram_tuple(text):
                 word_list = list(word_tup)
                 word_list[1] += 1
                 hist[hist.index(word_tup)] = tuple(word_list)
+                # If the word is found, it doesn't need a new entry
                 added = False
+        # If the boolean is true, add a new entry
         if added is True:
             hist.append((word, 1))
         added = True
@@ -75,6 +81,7 @@ def histogram_tuple(text):
 
 def histogram_counts(text):
     """Create a histogram that groups words by number of occurences"""
+    # Create dictionary histogram to reformat
     hist = histogram_dict(text)
     values = sorted(hist.values())
     vals = set(values)
@@ -134,7 +141,13 @@ def unique_words(histogram):
 
 def total_words(histogram):
     """Return the total number of words in a histogram"""
-    return sum(histogram.values())
+    if histogram == dict(histogram):
+        return sum(histogram.values())
+    elif histogram == list(histogram):
+        count = 0
+        for word in histogram:
+            count += word[1]
+        return count
 
 
 def frequency(histogram, word):
@@ -147,7 +160,10 @@ def frequency(histogram, word):
 
 @time_it
 def sample_by_dict_freq(histogram):
-    """Return a random word, with a probability based on occurences"""
+    """Return a random word, with a probability based on occurences
+
+    Works with dictionary histograms
+    """
     count = randint(1, total_words(histogram))
     for key in histogram:
         count -= histogram[key]
@@ -161,11 +177,7 @@ def sample_by_frequency(histogram):
 
     Works with list of lists and list of tuples
     """
-    count = 0
-    for word in histogram:
-        count += word[1]
-
-    count = randint(1, count)
+    count = randint(1, total_words(histogram))
     for word in histogram:
         count -= word[1]
         if count <= 0:
@@ -173,17 +185,20 @@ def sample_by_frequency(histogram):
     return -1
 
 
+@time_it
 def generate_sentence(histogram, length):
     """Generate a number of words equal to length and output a 'sentence'"""
     output = ""
     for i in range(length):
         if histogram == list(histogram):
             if i == 0:
+                # Capitalize the first letter
                 output += sample_by_frequency(histogram).capitalize() + " "
             else:
                 output += sample_by_frequency(histogram) + " "
         else:
             if i == 0:
+                # Capitalize the first letter
                 output += sample_by_dict_freq(histogram).capitalize() + " "
             else:
                 output += sample_by_dict_freq(histogram) + " "
