@@ -1,4 +1,5 @@
 import time
+from string import punctuation
 
 
 def time_it(func):
@@ -11,3 +12,12 @@ def time_it(func):
         return result
 
     return wrapper
+
+
+def read_file_words(file_name):
+    """Returns a list of words from a file of newline-separated words"""
+    with open(file_name, 'r') as f:
+        words = f.read().split()
+        new_words = [word.strip(punctuation) for word in words]
+
+    return new_words

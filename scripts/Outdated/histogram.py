@@ -1,5 +1,5 @@
-from python.dictionary_words import read_file_words
-from python.utility import time_it
+from scripts.Outdated.dictionary_words import read_file_words
+from scripts.utility import time_it
 from random import randint
 
 
