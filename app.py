@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request
-from python.histogram import run_file
+from scripts.markov import main
 from random import randint
 
 app = Flask(__name__)
@@ -14,5 +14,5 @@ def index():
     else:
         num = randint(5, 20)
     # Generates a sentence of length num
-    sent = run_file(num)
-    return render_template('index.html', sent=sent)
+    sent = main(num)
+    return render_template('index.html', sent=sent, num=num)
