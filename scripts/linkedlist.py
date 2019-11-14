@@ -94,6 +94,7 @@ class LinkedList(object):
             self.head = new_node
         else:
             self.head = new_node
+            self.tail = new_node
 
         return new_node
 
@@ -106,7 +107,7 @@ class LinkedList(object):
         while node is not None:
             # TODO: Check if node's data satisfies given quality function
             if quality(node.data):
-                return node
+                return node.data
             else:
                 node = node.next
         return None
@@ -117,12 +118,26 @@ class LinkedList(object):
         TODO: Worst case running time: O(???) Why and under what conditions?"""
         # TODO: Loop through nodes to find one whose data matches given item
         node = self.head
+        prev_node = self.head
         while node is not None:
             # TODO: Update previous node to skip around node with matching data
             if node.data == item:
-                pass
+                if self.length() == 1:
+                    self.head = None
+                    self.tail = None
+                if node == self.head:
+                    self.head = node.next
+                if node == self.tail:
+                    self.tail = prev_node
+                prev_node.next = node.next
+                node = None
+                return
+            elif node != prev_node:
+                prev_node = prev_node.next
+            node = node.next
         # TODO: Otherwise raise error to tell user that delete has failed
         # Hint: raise ValueError('Item not found: {}'.format(item))
+        raise ValueError(f'Item not found: {item}')
 
 
 def test_linked_list():
@@ -140,7 +155,7 @@ def test_linked_list():
     print('length: {}'.format(ll.length()))
 
     # Enable this after implementing delete method
-    delete_implemented = False
+    delete_implemented = True
     if delete_implemented:
         print('\nTesting delete:')
         for item in ['B', 'C', 'A']:
