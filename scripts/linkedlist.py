@@ -33,6 +33,10 @@ class LinkedList(object):
         """Return a string representation of this linked list."""
         return 'LinkedList({!r})'.format(self.items())
 
+    def __iter__(self):
+        """Returns an interable representation of this linked list"""
+        return iter([value for value in self.items()])
+
     def items(self):
         """Return a list (dynamic array) of all items in this linked list.
         Best and worst case running time: O(n) for n items in the list (length)
@@ -97,8 +101,9 @@ class LinkedList(object):
 
         return new_node
 
-    def find(self, quality):
+    def find(self, quality, data=True):
         """Return an item from this linked list satisfying the given quality.
+        If data is true, return the data itself, otherwise return its node
         Best case running time: O(1) if the first node satisfies quality
         Worst case running time: O(n) if iterating over every single node"""
         # Loop through all nodes to find item where quality(item) is True
@@ -106,7 +111,10 @@ class LinkedList(object):
         while node is not None:  # Loops variable amount, runs in O(1) to O(n)
             # Check if node's data satisfies given quality function
             if quality(node.data):
-                return node.data
+                if data:
+                    return node.data
+                else:
+                    return node
             else:
                 node = node.next
         return None
@@ -144,6 +152,11 @@ class LinkedList(object):
         # Otherwise raise error to tell user that delete has failed
         raise ValueError(f'Item not found: {item}')
 
+    def replace(self, item, new_item):
+        """Replace an existing item with a new one"""
+        node = self.find(lambda x: x == item, False)
+        node.data = new_item
+
 
 def test_linked_list():
     ll = LinkedList()
@@ -153,6 +166,16 @@ def test_linked_list():
     for item in ['A', 'B', 'C']:
         print('append({!r})'.format(item))
         ll.append(item)
+        print('list: {}'.format(ll))
+
+    print('head: {}'.format(ll.head))
+    print('tail: {}'.format(ll.tail))
+    print('length: {}'.format(ll.length()))
+
+    print('\nTesting replace:')
+    for item, new in [('C', 'B'), ('A', 'C'), ('B', 'A')]:
+        print('replace {!r} with {!r}'.format(item, new))
+        ll.replace(item, new)
         print('list: {}'.format(ll))
 
     print('head: {}'.format(ll.head))
