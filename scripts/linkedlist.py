@@ -19,6 +19,7 @@ class LinkedList(object):
         """Initialize this linked list and append the given items, if any."""
         self.head = None  # First node
         self.tail = None  # Last node
+        self.count = 0
         # Append given items
         if items is not None:
             for item in items:
@@ -62,14 +63,15 @@ class LinkedList(object):
 
     def length(self):
         """Return the length of this linked list by traversing its nodes.
-        Running time: O(n), because it loops through each node once"""
-        count = 0  # O(1) to declare variables
-        node = self.head
-        while node is not None:  # O(n) to loop through each node once
-            count += 1  # O(1) to adjust variables
-            node = node.next
+        Running time: O(1), returning a single variable
+        Former Running time: O(n), because it loops through each node once"""
+        # count = 0  # O(1) to declare variables
+        # node = self.head
+        # while node is not None:  # O(n) to loop through each node once
+        #     count += 1  # O(1) to adjust variables
+        #     node = node.next
 
-        return count
+        return self.count
 
     def append(self, item):
         """Insert the given item at the tail of this linked list.
@@ -83,6 +85,8 @@ class LinkedList(object):
         else:
             self.head = new_node
             self.tail = new_node
+
+        self.count += 1
 
         return new_node
 
@@ -98,6 +102,8 @@ class LinkedList(object):
         else:
             self.head = new_node
             self.tail = new_node
+
+        self.count += 1
 
         return new_node
 
@@ -145,6 +151,7 @@ class LinkedList(object):
                 # Update node and next ref of previous node
                 prev_node.next = node.next
                 node = None
+                self.count -= 1
                 return
             elif node != prev_node:
                 prev_node = prev_node.next
