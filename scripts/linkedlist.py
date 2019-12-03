@@ -1,5 +1,5 @@
 #!python
-from scripts.utility import time_it
+# from utility import time_it
 
 
 class Node(object):
@@ -40,7 +40,7 @@ class LinkedList(object):
         """Returns an interable representation of this linked list"""
         return iter([value for value in self.items()])
 
-    @time_it
+    # @time_it
     def items(self):
         """Return a list (dynamic array) of all items in this linked list.
         Best and worst case running time: O(n) for n items in the list (length)
@@ -64,7 +64,7 @@ class LinkedList(object):
         """Return a boolean indicating whether this linked list is empty."""
         return self.head is None
 
-    @time_it
+    # @time_it
     def length(self):
         """Return the length of this linked list by traversing its nodes.
         Running time: O(1), returning a single variable
@@ -77,7 +77,7 @@ class LinkedList(object):
 
         return self.count
 
-    @time_it
+    # @time_it
     def append(self, item):
         """Insert the given item at the tail of this linked list.
         Running time: O(1) because it sets variables without iterating"""
@@ -96,7 +96,7 @@ class LinkedList(object):
 
         return new_node
 
-    @time_it
+    # @time_it
     def prepend(self, item):
         """Insert the given item at the head of this linked list.
         Running time: O(1) because it sets variables and doesn't iterate"""
@@ -115,7 +115,7 @@ class LinkedList(object):
 
         return new_node
 
-    @time_it
+    # @time_it
     def find(self, quality, data=True):
         """Return an item from this linked list satisfying the given quality.
         If data is true, return the data itself, otherwise return its node
@@ -134,7 +134,7 @@ class LinkedList(object):
                 node = node.next
         return None
 
-    @time_it
+    # @time_it
     def delete(self, item):
         """Delete the given item from this linked list, or raise ValueError.
         Best case running time: O(1) if first node is the one to be deleted
@@ -169,7 +169,7 @@ class LinkedList(object):
         # Otherwise raise error to tell user that delete has failed
         raise ValueError(f'Item not found: {item}')
 
-    @time_it
+    # @time_it
     def replace(self, item, new_item):
         """Replace an existing item with a new one"""
         node = self.find(lambda x: x == item, False)
