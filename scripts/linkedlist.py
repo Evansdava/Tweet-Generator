@@ -1,4 +1,5 @@
 #!python
+from scripts.utility import time_it
 
 
 class Node(object):
@@ -7,6 +8,7 @@ class Node(object):
         """Initialize this node with the given data."""
         self.data = data
         self.next = None
+        self.prev = None
 
     def __repr__(self):
         """Return a string representation of this node."""
@@ -38,6 +40,7 @@ class LinkedList(object):
         """Returns an interable representation of this linked list"""
         return iter([value for value in self.items()])
 
+    @time_it
     def items(self):
         """Return a list (dynamic array) of all items in this linked list.
         Best and worst case running time: O(n) for n items in the list (length)
@@ -61,6 +64,7 @@ class LinkedList(object):
         """Return a boolean indicating whether this linked list is empty."""
         return self.head is None
 
+    @time_it
     def length(self):
         """Return the length of this linked list by traversing its nodes.
         Running time: O(1), returning a single variable
@@ -73,6 +77,7 @@ class LinkedList(object):
 
         return self.count
 
+    @time_it
     def append(self, item):
         """Insert the given item at the tail of this linked list.
         Running time: O(1) because it sets variables without iterating"""
@@ -81,6 +86,7 @@ class LinkedList(object):
         # Append node after tail, if it exists
         if self.tail is not None:  # O(1) to compare
             self.tail.next = new_node  # O(1) to set variables
+            new_node.prev = self.tail
             self.tail = new_node
         else:
             self.head = new_node
@@ -90,6 +96,7 @@ class LinkedList(object):
 
         return new_node
 
+    @time_it
     def prepend(self, item):
         """Insert the given item at the head of this linked list.
         Running time: O(1) because it sets variables and doesn't iterate"""
@@ -98,6 +105,7 @@ class LinkedList(object):
         # Prepend node before head, if it exists
         if self.head is not None:  # O(1) to compare
             new_node.next = self.head  # O(1) to set variables
+            self.head.prev = new_node
             self.head = new_node
         else:
             self.head = new_node
@@ -107,6 +115,7 @@ class LinkedList(object):
 
         return new_node
 
+    @time_it
     def find(self, quality, data=True):
         """Return an item from this linked list satisfying the given quality.
         If data is true, return the data itself, otherwise return its node
@@ -125,13 +134,13 @@ class LinkedList(object):
                 node = node.next
         return None
 
+    @time_it
     def delete(self, item):
         """Delete the given item from this linked list, or raise ValueError.
         Best case running time: O(1) if first node is the one to be deleted
         Worst case running time: O(n) if it has to loop through every node"""
         # Loop through nodes to find one whose data matches given item
         node = self.head
-        prev_node = self.head
         while node is not None:
             # Update previous node to skip around node with matching data
             if node.data == item:
@@ -146,19 +155,21 @@ class LinkedList(object):
 
                 # Change tail ref if need be
                 if node == self.tail:
-                    self.tail = prev_node
+                    self.tail = node.prev
 
                 # Update node and next ref of previous node
-                prev_node.next = node.next
+                if node.prev is not None:
+                    node.prev.next = node.next
+                if node.next is not None:
+                    node.next.prev = node.prev
                 node = None
                 self.count -= 1
                 return
-            elif node != prev_node:
-                prev_node = prev_node.next
             node = node.next
         # Otherwise raise error to tell user that delete has failed
         raise ValueError(f'Item not found: {item}')
 
+    @time_it
     def replace(self, item, new_item):
         """Replace an existing item with a new one"""
         node = self.find(lambda x: x == item, False)

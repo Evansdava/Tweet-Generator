@@ -1,6 +1,7 @@
 #!python
 
 from scripts.linkedlist import LinkedList
+from scripts.utility import time_it
 
 
 class HashTable(object):
@@ -25,6 +26,7 @@ class HashTable(object):
         # Calculate the given key's hash code and transform into bucket index
         return hash(key) % len(self.buckets)
 
+    @time_it
     def keys(self):
         """Return a list of all keys in this hash table.
         Running time: O(n) as it loops through each key once"""
@@ -35,6 +37,7 @@ class HashTable(object):
                 all_keys.append(key)
         return all_keys
 
+    @time_it
     def values(self):
         """Return a list of all values in this hash table.
         Running time: O(n) as it loops through each value once"""
@@ -46,6 +49,7 @@ class HashTable(object):
                 all_values.append(value)
         return all_values
 
+    @time_it
     def items(self):
         """Return a list of all items (key-value pairs) in this hash table.
         Running time: O(n) as it loops through each item"""
@@ -55,6 +59,7 @@ class HashTable(object):
             all_items.extend(bucket.items())
         return all_items
 
+    @time_it
     def length(self):
         """Return the number of key-value entries by traversing its buckets.
         Running time: O(1) as it performs one operation
@@ -68,6 +73,7 @@ class HashTable(object):
         # return count
         return self.count
 
+    @time_it
     def contains(self, key):
         """Return True if this hash table contains the given key, or False.
         Running time: O(n/b) as it's the average of the length of each
@@ -81,6 +87,7 @@ class HashTable(object):
         else:
             return True
 
+    @time_it
     def get(self, key):
         """Return the value associated with the given key, or raise KeyError.
         Running time: O(n/b) as it's the average of the length of each
@@ -95,6 +102,7 @@ class HashTable(object):
         # Otherwise, raise error to tell user get failed
         raise KeyError('Key not found: {}'.format(key))
 
+    @time_it
     def set(self, key, value):
         """Insert or update the given key with its associated value.
         Running time: O(n/b) as it loops over each entry in a bucket and
@@ -111,6 +119,7 @@ class HashTable(object):
         bucket.append((key, value))
         self.count += 1
 
+    @time_it
     def delete(self, key):
         """Delete the given key from this hash table, or raise KeyError.
         Running time: O(n/b) as it's the average length of a bucket
