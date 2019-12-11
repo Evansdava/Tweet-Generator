@@ -1,7 +1,13 @@
-from scripts.dictogram import Dictogram
+try:
+    from dictogram import Dictogram
+    from utility import read_file_words
+    from queue import Queue
+except ImportError:
+    from scripts.dictogram import Dictogram
+    from scripts.utility import read_file_words
+    from scripts.queue import Queue
+
 from random import choice
-from scripts.utility import read_file_words
-from scripts.queue import Queue
 """
 Read a file, turn it into a list
 
@@ -84,21 +90,21 @@ class MarkovN(Markov):
         output = []
         output.append(choice(tuple(self.markov.keys())))
 
-        # Start token should be capitalized
-        while output[0][0].islower():
+        # Start token should be a start token
+        while output[0].find("[S]") != 0:
             output[0] = choice(tuple(self.markov.keys()))
 
+        output[0] = output[0].replace("[S]", "")
         # Tracking end tokens
         tokens = 0
         i = 0
         while tokens < ends or i < length:
             try:
                 next_set = self.markov[output[i]].sample()
-                output.append(next_set)
-                last = next_set[len(next_set) - 1]
-                if ((last == "." and next_set[len(next_set) - 2] != "r")
-                   or last == "?" or last == "!" or last == "\""):
+                last = next_set[len(next_set) - 3:len(next_set) - 1]
+                if last == "[E]":
                     tokens += 1
+                output.append(next_set.replace("[E]", ""))
                 i += 1
             except KeyError:
                 break
@@ -169,7 +175,7 @@ def test_markov_n():
 but you hate dogs".split())
     print(mark.markov)
     assert mark.markov == {
-        'i like': {'like cats': 1, 'like dogs': 1}, 
+        'i like': {'like cats': 1, 'like dogs': 1},
         'like cats': {'cats and': 1, 'cats i': 1},
         'cats and': {'and you': 1},
         'and you': {'you like': 1},
@@ -189,9 +195,9 @@ def main(n, num):
     # text = "one fish two fish red fish blue fish".split()
     # text = ('how much wood would a wood chuck chuck'
     #         ' if a wood chuck could chuck wood').split()
-    markov = MarkovN('scripts/text_Pride_and_Prej.txt', 2)
+    markov = MarkovN('scripts/text_Wheel_of_Time_NoNL_S&E.txt', n)
 
-    return markov.walk(num, 2)
+    return markov.walk(ends=num)
 
 
 if __name__ == '__main__':

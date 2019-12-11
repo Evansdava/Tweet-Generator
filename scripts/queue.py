@@ -1,4 +1,7 @@
-import scripts.linkedlist as ll
+try:
+    import linkedlist as ll
+except ImportError:
+    import scripts.linkedlist as ll
 
 
 class Queue():

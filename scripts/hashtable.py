@@ -1,7 +1,10 @@
 #!python
-
-from scripts.linkedlist import LinkedList
-from scripts.utility import time_it
+try:
+    from linkedlist import LinkedList
+    from utility import time_it
+except ImportError:
+    from scripts.linkedlist import LinkedList
+    from scripts.utility import time_it
 
 
 class HashTable(object):
