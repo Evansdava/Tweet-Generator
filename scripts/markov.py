@@ -94,17 +94,17 @@ class MarkovN(Markov):
         while output[0].find("[S]") != 0:
             output[0] = choice(tuple(self.markov.keys()))
 
-        output[0] = output[0].replace("[S]", "")
+        output[0] = output[0]
         # Tracking end tokens
         tokens = 0
         i = 0
-        while tokens < ends or i < length:
+        while tokens < ends:  # or i < length:
             try:
                 next_set = self.markov[output[i]].sample()
-                last = next_set[len(next_set) - 3:len(next_set) - 1]
+                last = next_set[len(next_set) - 3:len(next_set)]
                 if last == "[E]":
                     tokens += 1
-                output.append(next_set.replace("[E]", ""))
+                output.append(next_set)
                 i += 1
             except KeyError:
                 break
@@ -112,10 +112,11 @@ class MarkovN(Markov):
         string = ""
         for word in output:
             if output.index(word) == 0:
-                string += word + " "
+                string += word.replace("[S]", "").replace("[E]", "") + " "
             else:
                 try:
-                    string += word.split()[self.n - 1] + " "
+                    text = word.split()[-1].replace("[S]", "")
+                    string += text.replace("[E]", "") + " "
                 except KeyError:
                     return string
 
