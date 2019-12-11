@@ -63,7 +63,15 @@ class MarkovN(Markov):
     def __init__(self, word_file, n):
         """Initialize starting values"""
         self.n = n
-        super().__init__(word_file)
+        self.word_list = read_file_words(word_file)
+        self.markov = self.make_chain(self.word_list)
+
+    def store_chain(self):
+        """Generates a text file with the Markov Chain info"""
+        with open('scripts/text/markov_chain_' + str(self.n), "w") as f:
+            metadata = f"Corpus Length: {len(self.word_list)} n: {self.n}\n"
+            f.write(metadata)
+            f.write(str(self.markov))
 
     def make_chain(self, word_list):
         """Create and return a markov chain from a given list of words"""
@@ -196,7 +204,7 @@ def main(n, num):
     # text = "one fish two fish red fish blue fish".split()
     # text = ('how much wood would a wood chuck chuck'
     #         ' if a wood chuck could chuck wood').split()
-    markov = MarkovN('scripts/text_Wheel_of_Time_NoNL_S&E.txt', n)
+    markov = MarkovN('scripts/text/text_Wheel_of_Time_NoNL_S&E.txt', n)
 
     return markov.walk(ends=num)
 

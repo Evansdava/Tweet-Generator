@@ -12,7 +12,10 @@ def index():
     if num.isnumeric():
         num = int(num)
     else:
-        num = 0
+        num = 1
     # Generates a sentence of length num
+    if num < 1:
+        num = 1
+
     sent = main(3, num)
     return render_template('index.html', sent=sent, num=num)
