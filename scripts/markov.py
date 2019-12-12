@@ -1,12 +1,13 @@
 try:
     from dictogram import Dictogram
-    from utility import read_file_words
+    from utility import read_file_words, time_it
     from queue import Queue
 except ImportError:
     from scripts.dictogram import Dictogram
-    from scripts.utility import read_file_words
+    from scripts.utility import read_file_words, time_it
     from scripts.queue import Queue
 
+# from ast import literal_eval
 from random import choice
 """
 Read a file, turn it into a list
@@ -65,14 +66,33 @@ class MarkovN(Markov):
         self.n = n
         self.word_list = read_file_words(word_file)
         self.markov = self.make_chain(self.word_list)
+        # self.store_chain()
+        # self.markov = self.retrieve_chain()
+        # print(self.markov)
 
-    def store_chain(self):
-        """Generates a text file with the Markov Chain info"""
-        with open('scripts/text/markov_chain_' + str(self.n), "w") as f:
-            metadata = f"Corpus Length: {len(self.word_list)} n: {self.n}\n"
-            f.write(metadata)
-            f.write(str(self.markov))
+    # def store_chain(self):
+    #     """Generates a text file with the Markov Chain info"""
+    #     with open('scripts/text/markov_chain_' + str(self.n), "w") as f:
+    #         # metadata = f"Corpus Length: {len(self.word_list)} n: {self.n}\n"
+    #         # f.write(metadata)
+    #         for key, value in self.markov.items():
+    #             f.write(f"{key}[:]{(tuple(value.keys()), tuple(value.values()))}\n")
 
+    # @time_it
+    # def retrieve_chain(self):
+    #     """Retrieves a Markov Chain from a text file"""
+    #     markov = {}
+    #     with open('scripts/text/markov_chain_' + str(self.n), 'r') as f:
+    #         entries = f.readlines()
+    #         for entry in entries:
+    #             item = entry.split("[:]", 1)
+    #             key = item[0]
+    #             value = tuple(item[1])
+    #             markov[key] = Dictogram(value)
+
+    #     return markov
+
+    # @time_it
     def make_chain(self, word_list):
         """Create and return a markov chain from a given list of words"""
         markov = {}
@@ -93,6 +113,7 @@ class MarkovN(Markov):
 
         return markov
 
+    # @time_it
     def walk(self, length=0, ends=0):
         """Randomly walk down a markov chain to generate a sentence"""
         output = []
