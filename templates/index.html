@@ -1,17 +1,17 @@
 {% extends 'base.html' %}
 
-{% block title %}The WoT Sentence Generator{% endblock %}
+{% block title %}The KSBD Sentence Generator{% endblock %}
 
 {% block body %}
     <style>
         body {
-            background-color: antiquewhite;
+            background-color: lightpink;
         }
     </style>
 
     <div class="container">
         <div class="row p-5 d-flex justify-content-center">
-            <h1>The Wheel of Time Sentence Generator</h1>
+            <h1>The Kill Six Billion Demons Sentence Generator</h1>
         </div>
         <div class="row p-5">
             <div class="col-md-10 offset-1">
@@ -20,6 +20,8 @@
                 </div>
                 <div class="row pt-5 d-flex justify-content-center">
                     <form action="/" class="form-inline">
+                        <label for="order">What order Markov Chain?&nbsp;</label>
+                        <input type="text" id="order" name="order" class="mr-2" size="3" value="{{n}}">
                         <label for="num">How many sentences?&nbsp;</label>
                         <input type="text" id="num" name="num" class="mr-2" size="3" value="{{num}}">
                         <button class="btn btn-primary" type="submit">Generate</button>

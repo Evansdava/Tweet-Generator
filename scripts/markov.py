@@ -225,13 +225,17 @@ def main(n, num):
     # text = "one fish two fish red fish blue fish".split()
     # text = ('how much wood would a wood chuck chuck'
     #         ' if a wood chuck could chuck wood').split()
-    markov = MarkovN('scripts/text/text_Wheel_of_Time_NoNL_S&E.txt', n)
+    # markov = MarkovN('scripts/text/text_Wheel_of_Time_NoNL_S&E.txt', n)
+    try:
+        markov = MarkovN('text/ksbd_NoNL_S&E.txt', n)
+    except FileNotFoundError:
+        markov = MarkovN('scripts/text/ksbd_NoNL_S&E.txt', n)
 
     return markov.walk(ends=num)
 
 
 if __name__ == '__main__':
     from sys import argv
-    num = int(argv[2])
     n = int(argv[1])
+    num = int(argv[2])
     print(main(n, num))
