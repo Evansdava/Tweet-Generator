@@ -7,7 +7,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    n = str(request.args.get('n'))
+    n = str(request.args.get('order'))
     num = str(request.args.get('num'))
     # Checking inputs
     if n.isnumeric():
